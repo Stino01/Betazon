@@ -2,6 +2,7 @@
 using Betazon.BLogic.Encryption;
 using Betazon.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Betazon.BLogic.ConnectionDb
 {
@@ -64,22 +65,23 @@ namespace Betazon.BLogic.ConnectionDb
             {
                 CheckDbOpening();
                 //Select per estrarre i dati
-                string CommandText = $"SELECT * FROM Admin A INNER JOIN EncryptionData E ON A.EncryptionDataId = E.Id WHERE A.FirstName = @FirstName AND E.EncryptedValue = @PasswordHash";
+                string CommandText = $"SELECT * FROM Admin A INNER JOIN EncryptionData E ON A.EncryptionDataId = E.Id";
                 
                 //Estrapolo i risultati
                 using (SqlCommand cmdInsert = sqlCmd)
                 {
-                    pass = encryption.EncryptString(password, "AES").EncryptedValue;
-                    cmdInsert.Parameters.AddWithValue("@FirstName", name);
-                    cmdInsert.Parameters.AddWithValue("@PasswordHash", pass);
-
                     cmdInsert.CommandText = CommandText;
                     cmdInsert.Connection = sqlCnn;
                     using (SqlDataReader reader = cmdInsert.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
-                            result = true;
+                            while (reader.Read())
+                            {
+                                pass = encryption.DecryptStringFromBytes_Aes(Convert.FromBase64String(reader["EncryptedValue"].ToString().Trim()), Convert.FromBase64String(reader["AesKey"].ToString().Trim()), Convert.FromBase64String(reader["AesIV"].ToString().Trim()));
+                                if (pass == password && name == reader["FirstName"].ToString())
+                                    { result = true; }
+                            }
                         }
                     }
                 }
