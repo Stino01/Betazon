@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace Betazon.Controllers
 {
-    [BasicAuthorization]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

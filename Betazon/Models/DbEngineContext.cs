@@ -12,5 +12,7 @@ namespace Betazon.Models
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Betazon.Models.EncryptionData> EncryptionData { get; set; }
+
+        public DbSet<Betazon.Models.Admin> Admin { get; set; }
     }
 }
