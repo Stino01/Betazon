@@ -83,14 +83,17 @@ namespace Betazon.Controllers
             Encryption encryption = new Encryption();
             EncryptionData data = new EncryptionData();
 
-            data = encryption.EncryptString(admin.PasswordHash, "AES");
-            admin.PasswordHash = data.EncryptedValue;
-            admin.AesKey = data.AesKey;
-            admin.AesIV = data.AesIV;
+            data = encryption.EncryptString(admin.EncryptionData.EncryptedValue, "AES");
+            
             admin.Rowguid = Guid.NewGuid();
             admin.ModifiedDate = DateTime.Now;
+            admin.EncryptionData.EncryptedValue = data.EncryptedValue;
+            admin.EncryptionData.AesKey = data.AesKey;
+            admin.EncryptionData.AesIV = data.AesIV;
 
             _context.Admin.Add(admin);
+            
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAdmin", new { id = admin.AdminID }, admin);

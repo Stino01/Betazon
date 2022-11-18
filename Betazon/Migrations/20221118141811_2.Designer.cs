@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Betazon.Migrations
 {
     [DbContext(typeof(DbEngineContext))]
-    [Migration("20221118105227_encrypt")]
-    partial class encrypt
+    [Migration("20221118141811_2")]
+    partial class _2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,50 @@ namespace Betazon.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Betazon.Models.Admin", b =>
+                {
+                    b.Property<int>("AdminID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"));
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EncryptionDataId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Rowguid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AdminID");
+
+                    b.HasIndex("EncryptionDataId");
+
+                    b.ToTable("Admin");
+                });
 
             modelBuilder.Entity("Betazon.Models.Customer", b =>
                 {
@@ -114,6 +158,15 @@ namespace Betazon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EncryptionData");
+                });
+
+            modelBuilder.Entity("Betazon.Models.Admin", b =>
+                {
+                    b.HasOne("Betazon.Models.EncryptionData", "EncryptionData")
+                        .WithMany()
+                        .HasForeignKey("EncryptionDataId");
+
+                    b.Navigation("EncryptionData");
                 });
 #pragma warning restore 612, 618
         }

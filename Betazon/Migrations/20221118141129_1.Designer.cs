@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Betazon.Migrations
 {
     [DbContext(typeof(DbEngineContext))]
-    [Migration("20221118113621_admin")]
-    partial class admin
+    [Migration("20221118141129_1")]
+    partial class _1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,14 +33,11 @@ namespace Betazon.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"));
 
-                    b.Property<string>("AesIV")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AesKey")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EncryptionDataId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -56,10 +53,6 @@ namespace Betazon.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
@@ -70,6 +63,8 @@ namespace Betazon.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AdminID");
+
+                    b.HasIndex("EncryptionDataId");
 
                     b.ToTable("Admin");
                 });
@@ -163,6 +158,17 @@ namespace Betazon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EncryptionData");
+                });
+
+            modelBuilder.Entity("Betazon.Models.Admin", b =>
+                {
+                    b.HasOne("Betazon.Models.EncryptionData", "EncryptionData")
+                        .WithMany()
+                        .HasForeignKey("EncryptionDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EncryptionData");
                 });
 #pragma warning restore 612, 618
         }
