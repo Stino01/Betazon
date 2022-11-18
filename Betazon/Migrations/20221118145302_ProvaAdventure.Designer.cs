@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Betazon.Migrations
 {
     [DbContext(typeof(DbEngineContext))]
-    [Migration("20221118141811_2")]
-    partial class _2
+    [Migration("20221118145302_ProvaAdventure")]
+    partial class ProvaAdventure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

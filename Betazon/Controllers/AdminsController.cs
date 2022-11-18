@@ -11,7 +11,7 @@ using Betazon.BLogic.Encryption;
 
 namespace Betazon.Controllers
 {
-    //[BasicAuthorization] da sistemare
+    [BasicAuthorization]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminsController : ControllerBase

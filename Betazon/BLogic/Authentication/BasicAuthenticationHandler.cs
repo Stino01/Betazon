@@ -45,7 +45,7 @@ namespace Betazon.BLogic.Authentication
             var authUser = authSplit[0];
             var authPassword = authSplit.Length > 1 ? authSplit[1] : throw new Exception("Unable to get Password");
 
-            if (!user.getCustomer(authUser, authPassword))
+            if (!user.getAdmin(authUser, authPassword))
             {
                 return Task.FromResult(AuthenticateResult.Fail("User e/o password errati !!!"));
             }

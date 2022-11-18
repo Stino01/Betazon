@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Betazon.Migrations
 {
     /// <inheritdoc />
-    public partial class _1 : Migration
+    public partial class ProvaAdventure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,7 +66,7 @@ namespace Betazon.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EncryptionDataId = table.Column<int>(type: "int", nullable: false),
+                    EncryptionDataId = table.Column<int>(type: "int", nullable: true),
                     Rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -77,8 +77,7 @@ namespace Betazon.Migrations
                         name: "FK_Admin_EncryptionData_EncryptionDataId",
                         column: x => x.EncryptionDataId,
                         principalTable: "EncryptionData",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

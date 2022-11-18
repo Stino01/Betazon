@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Betazon.BLogic.Encryption;
+using Betazon.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Betazon.BLogic.ConnectionDb
 {
@@ -53,22 +55,23 @@ namespace Betazon.BLogic.ConnectionDb
             }
         }
 
-        public bool getCustomer(string name, string password)
+        public bool getAdmin(string name, string password)
         {
             bool result = false;
+            string pass = string.Empty;
             Encryption.Encryption encryption = new Encryption.Encryption();
             try
             {
                 CheckDbOpening();
                 //Select per estrarre i dati
-                string CommandText = $"SELECT * FROM Customers WHERE FirstName = @FirstName AND PasswordHash = @PasswordHash";
-
+                string CommandText = $"SELECT * FROM Admin A INNER JOIN EncryptionData E ON A.EncryptionDataId = E.Id WHERE A.FirstName = @FirstName AND E.EncryptedValue = @PasswordHash";
+                
                 //Estrapolo i risultati
                 using (SqlCommand cmdInsert = sqlCmd)
                 {
-                    //password = encryption.EncryptString(password);
+                    pass = encryption.EncryptString(password, "AES").EncryptedValue;
                     cmdInsert.Parameters.AddWithValue("@FirstName", name);
-                    cmdInsert.Parameters.AddWithValue("@PasswordHash", password);
+                    cmdInsert.Parameters.AddWithValue("@PasswordHash", pass);
 
                     cmdInsert.CommandText = CommandText;
                     cmdInsert.Connection = sqlCnn;
@@ -94,6 +97,5 @@ namespace Betazon.BLogic.ConnectionDb
             //Ritorno la lista popolata
             return result;
         }
-
-    }
+   }
 }

@@ -6,7 +6,7 @@ namespace Betazon.BLogic.Encryption
 {
     public class Encryption
     {
-        public EncryptionData EncryptString(string StrValue, string AlgorithmType = "")
+        public EncryptionData EncryptString(string StrValue, string AlgorithmType)
         {
             if (string.IsNullOrEmpty(StrValue)) return null;
 
