@@ -78,16 +78,23 @@ namespace Betazon.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-
             Encryption encryption = new Encryption();
-            customer.PasswordHash = encryption.EncryptString(customer.PasswordHash);
-
-            customer.PasswordSalt = encryption.GetSalt();
-
+            EncryptionData data = new EncryptionData();
+            string type = "SHA512";
+            // mi riporta oggetto con tipologia e valore
+            data = encryption.EncryptString(customer.PasswordHash, type);
+            // nell oggetto customer mi salvo l hash
+            customer.PasswordHash = data.EncryptedValue;
+            // nell oggetto customer mi salvo il salt se usiamo un metoto di tipo sha
+            if (type.Contains("SHA"))
+            {
+                customer.PasswordSalt = encryption.GetSalt();
+            }
+            // generiamo una guid
             customer.Rowguid = Guid.NewGuid();
 
             customer.ModifiedDate = DateTime.Now;
-
+            // aggiungo dati in 
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 

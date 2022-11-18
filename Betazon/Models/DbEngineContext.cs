@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Betazon.Models;
 
 namespace Betazon.Models
 {
@@ -9,5 +10,7 @@ namespace Betazon.Models
         { }
 
         public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Betazon.Models.EncryptionData> EncryptionData { get; set; }
     }
 }

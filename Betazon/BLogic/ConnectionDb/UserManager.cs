@@ -66,7 +66,7 @@ namespace Betazon.BLogic.ConnectionDb
                 //Estrapolo i risultati
                 using (SqlCommand cmdInsert = sqlCmd)
                 {
-                    password = encryption.EncryptString(password);
+                    //password = encryption.EncryptString(password);
                     cmdInsert.Parameters.AddWithValue("@FirstName", name);
                     cmdInsert.Parameters.AddWithValue("@PasswordHash", password);
 
